@@ -1,0 +1,402 @@
+[
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "failed",
+        "failed_attempts": 2,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "10.0.0.108",
+        "status": "failed",
+        "failed_attempts": 2,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "unknown_ip"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "success",
+        "failed_attempts": 0,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "failed",
+        "failed_attempts": 4,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "failed",
+        "failed_attempts": 8,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "10.0.0.114",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "failed",
+        "failed_attempts": 4,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "cam01",
+        "device_type": "camera",
+        "ip": "192.168.1.10",
+        "status": "failed",
+        "failed_attempts": 8,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "10.0.0.162",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "unknown_ip"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "10.0.0.80",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "192.168.1.11",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "192.168.1.11",
+        "status": "failed",
+        "failed_attempts": 8,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "192.168.1.11",
+        "status": "failed",
+        "failed_attempts": 3,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "192.168.1.11",
+        "status": "failed",
+        "failed_attempts": 4,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "192.168.1.11",
+        "status": "failed",
+        "failed_attempts": 2,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "10.0.0.130",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "unknown_ip"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "192.168.1.11",
+        "status": "failed",
+        "failed_attempts": 4,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "sensor01",
+        "device_type": "sensor",
+        "ip": "192.168.1.11",
+        "status": "failed",
+        "failed_attempts": 2,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "success",
+        "failed_attempts": 0,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "10.0.0.36",
+        "status": "failed",
+        "failed_attempts": 3,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "unknown_ip"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "10.0.0.245",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "unknown_ip"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "failed",
+        "failed_attempts": 2,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "failed",
+        "failed_attempts": 2,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "success",
+        "failed_attempts": 0,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "failed",
+        "failed_attempts": 8,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "thermo01",
+        "device_type": "thermostat",
+        "ip": "192.168.1.12",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "192.168.1.13",
+        "status": "failed",
+        "failed_attempts": 7,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "192.168.1.13",
+        "status": "failed",
+        "failed_attempts": 8,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "192.168.1.13",
+        "status": "failed",
+        "failed_attempts": 2,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "192.168.1.13",
+        "status": "failed",
+        "failed_attempts": 3,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "10.0.0.243",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "10.0.0.107",
+        "status": "failed",
+        "failed_attempts": 8,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "10.0.0.68",
+        "status": "failed",
+        "failed_attempts": 3,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "unknown_ip"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "192.168.1.13",
+        "status": "failed",
+        "failed_attempts": 4,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "10.0.0.189",
+        "status": "failed",
+        "failed_attempts": 7,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "door01",
+        "device_type": "door_lock",
+        "ip": "192.168.1.13",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "10.0.0.229",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "unknown_ip"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 6,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "10.0.0.170",
+        "status": "failed",
+        "failed_attempts": 5,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "brute_force"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 1,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    },
+    {
+        "device_id": "light01",
+        "device_type": "smart_light",
+        "ip": "192.168.1.14",
+        "status": "failed",
+        "failed_attempts": 4,
+        "timestamp = datetime.now() - timedelta(seconds=random.randint(0, 3600)) attack_type": "normal"
+    }
+]

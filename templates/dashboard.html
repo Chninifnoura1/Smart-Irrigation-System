@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>AgroSmart Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f1117; color: #e0e0e0; min-height: 100vh; }
+
+    .topbar {
+      background: linear-gradient(135deg, #1a1f2e, #0d7c4f);
+      padding: 16px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #2a3a2a;
+    }
+    .topbar h1 { font-size: 1.4rem; color: #4ade80; letter-spacing: 1px; }
+    .topbar .user { font-size: 0.85rem; color: #aaa; }
+    .topbar a { color: #f87171; text-decoration: none; font-size: 0.85rem; margin-left: 16px; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: #1a1f2e; border-radius: 12px; padding: 20px;
+      border: 1px solid #2a3040;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: transform 0.2s;
+    }
+    .kpi-card:hover { transform: translateY(-3px); }
+    .kpi-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+    .kpi-value { font-size: 2rem; font-weight: 700; }
+    .kpi-unit  { font-size: 0.8rem; color: #666; }
+    .kpi-card.temp    .kpi-value { color: #f97316; }
+    .kpi-card.humidity .kpi-value { color: #38bdf8; }
+    .kpi-card.fertility .kpi-value { color: #a78bfa; }
+    .kpi-card.score   .kpi-value { color: #4ade80; }
+
+    /* Charts */
+    .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+    .chart-card {
+      background: #1a1f2e; border-radius: 12px; padding: 20px;
+      border: 1px solid #2a3040;
+    }
+    .chart-card h3 { font-size: 0.85rem; color: #888; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Pump status */
+    .status-bar {
+      display: flex; gap: 16px; align-items: center; margin-bottom: 24px;
+      background: #1a1f2e; border-radius: 12px; padding: 16px 24px;
+      border: 1px solid #2a3040;
+    }
+    .pump-badge {
+      padding: 6px 20px; border-radius: 20px; font-weight: 700; font-size: 0.9rem;
+    }
+    .pump-on  { background: #14532d; color: #4ade80; border: 1px solid #4ade80; }
+    .pump-off { background: #3b1c1c; color: #f87171; border: 1px solid #f87171; }
+    .mode-badge { padding: 6px 16px; border-radius: 20px; background: #1e3a5f; color: #38bdf8; font-size: 0.85rem; }
+
+    /* Predict Panel */
+    .predict-panel {
+      background: #1a1f2e; border-radius: 12px; padding: 24px;
+      border: 1px solid #2a3040; margin-bottom: 24px;
+    }
+    .predict-panel h2 { color: #4ade80; margin-bottom: 20px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+    .sliders-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 24px; }
+    .slider-group label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+    .slider-group .val  { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+    .slider-group input[type=range] {
+      width: 100%; -webkit-appearance: none; height: 6px; border-radius: 3px;
+      background: #2a3040; outline: none;
+    }
+    .slider-group input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      cursor: pointer;
+    }
+    .slider-temp input::-webkit-slider-thumb     { background: #f97316; }
+    .slider-humidity input::-webkit-slider-thumb { background: #38bdf8; }
+    .slider-fertility input::-webkit-slider-thumb{ background: #a78bfa; }
+
+    .predict-btn {
+      background: linear-gradient(135deg, #0d7c4f, #065f46);
+      color: white; border: none; padding: 12px 40px;
+      border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .predict-btn:hover { opacity: 0.85; }
+
+    .result-box {
+      margin-top: 20px; padding: 20px; background: #0f1117;
+      border-radius: 10px; border: 1px solid #2a3040; display: none;
+    }
+    .score-big { font-size: 3rem; font-weight: 800; color: #4ade80; }
+    .score-bar-bg { background: #2a3040; border-radius: 10px; height: 12px; margin: 12px 0; }
+    .score-bar-fill { height: 12px; border-radius: 10px; transition: width 0.8s ease; }
+    .advice-list { margin-top: 12px; }
+    .advice-list li { padding: 6px 0; font-size: 0.9rem; color: #ccc; list-style: none; }
+
+    /* Control buttons */
+    .control-panel { display: flex; gap: 12px; flex-wrap: wrap; }
+    .ctrl-btn {
+      padding: 10px 24px; border-radius: 8px; border: none;
+      cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: opacity 0.2s;
+    }
+    .ctrl-btn:hover { opacity: 0.8; }
+    .btn-on   { background: #14532d; color: #4ade80; border: 1px solid #4ade80; }
+    .btn-off  { background: #3b1c1c; color: #f87171; border: 1px solid #f87171; }
+    .btn-auto { background: #1e3a5f; color: #38bdf8; border: 1px solid #38bdf8; }
+
+    /* Ideas section */
+    .ideas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .idea-card {
+      background: #1a1f2e; border-radius: 12px; padding: 20px;
+      border: 1px solid #2a3040;
+    }
+    .idea-card h4 { color: #4ade80; margin-bottom: 8px; font-size: 0.95rem; }
+    .idea-card p  { color: #888; font-size: 0.82rem; line-height: 1.5; }
+    .idea-tag { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; background: #0d7c4f22; color: #4ade80; border: 1px solid #0d7c4f; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>🌿 AgroSmart</h1>
+  <div>
+    <span class="user">👤 {{ username }}</span>
+    <a href="/logout">Déconnexion</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card temp">
+      <div class="kpi-label">Température</div>
+      <div class="kpi-value" id="kpi-temp">--</div>
+      <div class="kpi-unit">°C</div>
+    </div>
+    <div class="kpi-card humidity">
+      <div class="kpi-label">Humidité</div>
+      <div class="kpi-value" id="kpi-humidity">--</div>
+      <div class="kpi-unit">%</div>
+    </div>
+    <div class="kpi-card fertility">
+      <div class="kpi-label">Fertilité</div>
+      <div class="kpi-value" id="kpi-fertility">--</div>
+      <div class="kpi-unit">%</div>
+    </div>
+    <div class="kpi-card score">
+      <div class="kpi-label">Score Sol</div>
+      <div class="kpi-value" id="kpi-score">--</div>
+      <div class="kpi-unit">/ 100</div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span style="color:#888; font-size:0.85rem;">Pompe :</span>
+    <span class="pump-badge pump-off" id="pump-badge">OFF</span>
+    <span class="mode-badge" id="mode-badge">AUTO</span>
+    <a href="/souss-massa" style="color:#4ade80; margin-left:16px; font-size:0.85rem;">
+  🌍 Souss-Massa
+</a>
+    <div class="control-panel" style="margin-left:auto;">
+      <button class="ctrl-btn btn-on"   onclick="sendControl('ON')">💧 ON</button>
+      <button class="ctrl-btn btn-off"  onclick="sendControl('OFF')">⛔ OFF</button>
+      <button class="ctrl-btn btn-auto" onclick="sendControl('AUTO')">🤖 AUTO</button>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>🌡️ Température (live)</h3>
+      <canvas id="chartTemp" height="160"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>💧 Humidité (live)</h3>
+      <canvas id="chartHumidity" height="160"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>🌱 Fertilité (live)</h3>
+      <canvas id="chartFertility" height="160"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>📊 Score Sol (live)</h3>
+      <canvas id="chartScore" height="160"></canvas>
+    </div>
+  </div>
+
+  <!-- Predict Panel -->
+  <div class="predict-panel">
+    <h2>🧠 Prédiction Neural Network — Score du Sol</h2>
+    <div class="sliders-grid">
+      <div class="slider-group slider-temp">
+        <label>Température</label>
+        <div class="val" id="val-temp" style="color:#f97316">25°C</div>
+        <input type="range" min="10" max="45" value="25" step="0.5"
+               oninput="document.getElementById('val-temp').textContent=this.value+'°C'">
+      </div>
+      <div class="slider-group slider-humidity">
+        <label>Humidité</label>
+        <div class="val" id="val-humidity" style="color:#38bdf8">50%</div>
+        <input type="range" min="10" max="100" value="50" step="1"
+               oninput="document.getElementById('val-humidity').textContent=this.value+'%'">
+      </div>
+      <div class="slider-group slider-fertility">
+        <label>Fertilité</label>
+        <div class="val" id="val-fertility" style="color:#a78bfa">50%</div>
+        <input type="range" min="0" max="100" value="50" step="1"
+               oninput="document.getElementById('val-fertility').textContent=this.value+'%'">
+      </div>
+    </div>
+    <button class="predict-btn" onclick="runPredict()">🔮 Prédire le Score</button>
+    <div class="result-box" id="result-box">
+      <div style="display:flex; align-items:baseline; gap:12px;">
+        <div class="score-big" id="result-score">--</div>
+        <div style="color:#888; font-size:1rem;">/ 100</div>
+      </div>
+      <div class="score-bar-bg">
+        <div class="score-bar-fill" id="score-bar" style="width:0%; background:#4ade80;"></div>
+      </div>
+      <ul class="advice-list" id="advice-list"></ul>
+    </div>
+  </div>
+
+ 
+
+</div>
+
+<script>
+const MAX_POINTS = 20;
+const labels = [];
+
+function makeChart(id, label, color) {
+  const ctx = document.getElementById(id).getContext('2d');
+  return new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: label,
+        data: [],
+        borderColor: color,
+        backgroundColor: color + '22',
+        borderWidth: 2,
+        pointRadius: 3,
+        pointBackgroundColor: color,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 300 },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#555', maxTicksLimit: 6 }, grid: { color: '#1e2535' } },
+        y: { ticks: { color: '#555' }, grid: { color: '#1e2535' } }
+      }
+    }
+  });
+}
+
+const chartTemp     = makeChart('chartTemp',     'Température', '#f97316');
+const chartHumidity = makeChart('chartHumidity', 'Humidité',    '#38bdf8');
+const chartFertility= makeChart('chartFertility','Fertilité',   '#a78bfa');
+const chartScore    = makeChart('chartScore',    'Score',       '#4ade80');
+
+function pushData(chart, value) {
+  if (chart.data.datasets[0].data.length >= MAX_POINTS) {
+    chart.data.datasets[0].data.shift();
+    chart.data.labels.shift();
+  }
+  const t = new Date().toLocaleTimeString('fr', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  chart.data.labels.push(t);
+  chart.data.datasets[0].data.push(value);
+  chart.update();
+}
+
+async function fetchData() {
+  try {
+    const res  = await fetch('/api/data');
+    const d    = await res.json();
+
+    document.getElementById('kpi-temp').textContent     = d.temp;
+    document.getElementById('kpi-humidity').textContent = d.humidity;
+    document.getElementById('kpi-fertility').textContent= d.fertility;
+    document.getElementById('kpi-score').textContent    = d.score;
+
+    const badge = document.getElementById('pump-badge');
+    badge.textContent = d.pump;
+    badge.className   = 'pump-badge ' + (d.pump === 'ON' ? 'pump-on' : 'pump-off');
+    document.getElementById('mode-badge').textContent = d.mode;
+
+    pushData(chartTemp,      d.temp);
+    pushData(chartHumidity,  d.humidity);
+    pushData(chartFertility, d.fertility);
+    pushData(chartScore,     d.score);
+  } catch(e) { console.error(e); }
+}
+
+async function runPredict() {
+  const temp      = document.querySelector('.slider-temp input').value;
+  const humidity  = document.querySelector('.slider-humidity input').value;
+  const fertility = document.querySelector('.slider-fertility input').value;
+
+  const res  = await fetch('/api/predict', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({temp, humidity, fertility})
+  });
+  const d = await res.json();
+
+  document.getElementById('result-score').textContent = d.score;
+  const color = d.score >= 70 ? '#4ade80' : d.score >= 40 ? '#facc15' : '#f87171';
+  document.getElementById('score-bar').style.width     = d.score + '%';
+  document.getElementById('score-bar').style.background= color;
+  document.getElementById('result-score').style.color  = color;
+
+  const ul = document.getElementById('advice-list');
+  ul.innerHTML = d.advice.map(a => `<li>${a}</li>`).join('');
+  document.getElementById('result-box').style.display = 'block';
+}
+
+async function sendControl(action) {
+  const body = new FormData();
+  body.append('action', action);
+  await fetch('/control', {method:'POST', body});
+}
+
+fetchData();
+setInterval(fetchData, 3000);
+</script>
+</body>
+</html>
