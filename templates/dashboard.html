@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Irrigation Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* --- CSS (DESIGN) --- */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e6e6e6;
+            color: #333;
+        }
+
+        /* --- Nav Bar & Dropdown Menu --- */
+        .top-nav {
+            background: #f4f4f4;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+        }
+        .nav-left {
+            display: flex; 
+            align-items: center; 
+            font-size: 18px; 
+            color: #555;
+            position: relative; /* Darori bash l'menu yb9a lase9 ta7t mnha */
+        }
+        .menu-icon {
+            font-size: 24px; 
+            margin-right: 15px; 
+            cursor: pointer; 
+            user-select: none;
+        }
+        .dropdown-content {
+            display: none; /* Makhfi f lawal */
+            position: absolute;
+            top: 40px; 
+            left: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            z-index: 100;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+            transition: 0.3s;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown-header {
+            padding: 12px 16px;
+            font-weight: bold;
+            color: #555;
+            background: #e0e0e0;
+            font-size: 13px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* --- Ba9i l'Design (Panels & Gauges) --- */
+        .main-container {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .panel {
+            background: #fafafa;
+            border: 1px solid #c0c0c0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .panel-header {
+            background: #e0e0e0;
+            padding: 5px 10px;
+            font-size: 12px;
+            color: #555;
+            border-bottom: 1px solid #c0c0c0;
+        }
+        .info1-content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .gauges-column {
+            flex: 1;
+            min-width: 300px;
+            border-right: 1px solid #e0e0e0;
+            padding: 10px;
+        }
+        .charts-column {
+            flex: 2;
+            min-width: 400px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .gauge-container {
+            text-align: center;
+            position: relative;
+            margin-bottom: 20px;
+            height: 180px; 
+        }
+        .gauge-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #444;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .gauge-value {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .gauge-value span {
+            font-size: 12px;
+            font-weight: normal;
+        }
+        canvas {
+            max-height: 140px;
+        }
+        .pump-content {
+            padding: 20px;
+            background: #e8e8e8;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            max-width: 400px;
+        }
+        .button-group button {
+            flex: 1;
+            padding: 10px;
+            background: #2b5cb5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .button-group button:hover {
+            background: #1a428a;
+        }
+        .pump-indicator {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 14px;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body onload="init()">
+
+    <div class="top-nav">
+        <div class="nav-left">
+            <span class="menu-icon" onclick="toggleMenu()">≡</span> HOME
+            
+            <div id="monMenu" class="dropdown-content">
+                <div class="dropdown-header">👤 {{ username }}</div>
+                <a href="/user">Espace User</a>
+                <a href="/logout" style="color: #d93025; font-weight: bold;">Déconnexion</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <div class="panel">
+            <div class="panel-header">INFO 1</div>
+            <div class="info1-content">
+                <div class="gauges-column">
+                    <div class="gauge-container">
+                        <span class="gauge-title">temperature-gauge</span>
+                        <canvas id="tempGauge"></canvas>
+                        <div class="gauge-value" id="tempValue">0<br><span>°C</span></div>
+                    </div>
+                    <div class="gauge-container">
+                        <span class="gauge-title">humidity-gauge</span>
+                        <canvas id="humGauge"></canvas>
+                        <div class="gauge-value" id="humValue">0<br><span>%</span></div>
+                    </div>
+                </div>
+                <div class="charts-column">
+                    <div class="gauge-container">
+                        <span class="gauge-title">temperature-chart</span>
+                        <canvas id="tempChart"></canvas>
+                    </div>
+                    <div class="gauge-container">
+                        <span class="gauge-title">humidity-chart</span>
+                        <canvas id="humChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">Pomp status</div>
+            <div class="pump-content">
+                <div class="button-group">
+                    <button onclick="controlPump('ON')">ON</button>
+                    <button onclick="controlPump('OFF')">OFF</button>
+                    <button onclick="controlPump('AUTO')">AUTO</button>
+                </div>
+                
+                <div class="pump-indicator" id="pumpInd">
+                    Pump: <span id="sysPump">Unknown</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT --- */
+        let tempGauge, humGauge;
+        let tempChart, humChart;
+
+        // Fonction bach tsawb les gauges
+        function createGauge(id, max, color) {
+            return new Chart(document.getElementById(id), {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [0, max],
+                        backgroundColor: [color, "#d3d3d3"],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    rotation: -90,
+                    circumference: 180,
+                    cutout: "80%",
+                    maintainAspectRatio: false,
+                    plugins: { tooltip: { enabled: false } }
+                }
+            });
+        }
+
+        // Fonction bach tsawb les graphes
+        function createLineChart(id, color) {
+            return new Chart(document.getElementById(id), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        borderColor: color,
+                        backgroundColor: color + "33",
+                        borderWidth: 2,
+                        fill: true,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { display: true },
+                        y: { min: 0, max: 100, display: true }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Initialisation dyal l'page
+        function init() {
+            tempGauge = createGauge("tempGauge", 60, "#4caf50");
+            humGauge = createGauge("humGauge", 100, "#ffeb3b");
+
+            tempChart = createLineChart("tempChart", "#4caf50");
+            humChart = createLineChart("humChart", "#ffeb3b");
+
+            loadData();
+        }
+
+        // Njibou les donnees mn API
+        async function loadData() {
+            try {
+                const res = await fetch('/api/data');
+                const data = await res.json();
+
+                updateGauge(tempGauge, data.temp, 60, "tempValue", "°C");
+                updateGauge(humGauge, data.humidity, 100, "humValue", "%");
+
+                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                updateChart(tempChart, time, data.temp);
+                updateChart(humChart, time, data.humidity);
+
+                document.getElementById("sysPump").innerText = data.pump;
+
+                let pumpInd = document.getElementById("pumpInd");
+                if(data.pump === "ON") {
+                    pumpInd.style.backgroundColor = "#d4edda";
+                    pumpInd.style.color = "#155724";
+                } else {
+                    pumpInd.style.backgroundColor = "#f8d7da";
+                    pumpInd.style.color = "#721c24";
+                }
+
+            } catch (e) {
+                console.error("Erreur API:", e);
+            }
+            setTimeout(loadData, 2000); 
+        }
+
+        function updateGauge(gauge, value, max, id, unit) {
+            let safeValue = Math.max(0, Math.min(value, max));
+            gauge.data.datasets[0].data = [safeValue, max - safeValue];
+            gauge.update();
+            document.getElementById(id).innerHTML = `${value}<br><span>${unit}</span>`;
+        }
+
+        function updateChart(chart, label, value) {
+            chart.data.labels.push(label);
+            chart.data.datasets[0].data.push(value);
+            if (chart.data.labels.length > 15) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.update();
+        }
+
+        function controlPump(action) {
+            fetch('/control', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `action=${action}`
+            });
+            setTimeout(loadData, 500);
+        }
+
+        // --- ANIMATION DYAL L'MENU (DROPDOWN) ---
+        function toggleMenu() {
+            var menu = document.getElementById("monMenu");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-icon')) {
+                var menu = document.getElementById("monMenu");
+                if (menu && menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
